@@ -2,7 +2,7 @@ import { Field } from '@nestjs/graphql';
 import { ArgsType } from '@nestjs/graphql';
 import { ArticleWhereInput } from './article-where.input';
 import { Type } from 'class-transformer';
-import { ArticleOrderByWithRelationAndSearchRelevanceInput } from './article-order-by-with-relation-and-search-relevance.input';
+import { ArticleOrderByWithRelationInput } from './article-order-by-with-relation.input';
 import { Prisma } from '@prisma/client';
 import { ArticleWhereUniqueInput } from './article-where-unique.input';
 import { Int } from '@nestjs/graphql';
@@ -14,34 +14,35 @@ import { ArticleMaxAggregateInput } from './article-max-aggregate.input';
 
 @ArgsType()
 export class ArticleAggregateArgs {
-  @Field(() => ArticleWhereInput, { nullable: true })
-  @Type(() => ArticleWhereInput)
-  where?: ArticleWhereInput;
 
-  @Field(() => [ArticleOrderByWithRelationAndSearchRelevanceInput], { nullable: true })
-  orderBy?: Array<ArticleOrderByWithRelationAndSearchRelevanceInput>;
+    @Field(() => ArticleWhereInput, {nullable:true})
+    @Type(() => ArticleWhereInput)
+    where?: ArticleWhereInput;
 
-  @Field(() => ArticleWhereUniqueInput, { nullable: true })
-  cursor?: Prisma.AtLeast<ArticleWhereUniqueInput, 'id' | 'slug'>;
+    @Field(() => [ArticleOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<ArticleOrderByWithRelationInput>;
 
-  @Field(() => Int, { nullable: true })
-  take?: number;
+    @Field(() => ArticleWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<ArticleWhereUniqueInput, 'id' | 'slug'>;
 
-  @Field(() => Int, { nullable: true })
-  skip?: number;
+    @Field(() => Int, {nullable:true})
+    take?: number;
 
-  @Field(() => ArticleCountAggregateInput, { nullable: true })
-  _count?: ArticleCountAggregateInput;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
 
-  @Field(() => ArticleAvgAggregateInput, { nullable: true })
-  _avg?: ArticleAvgAggregateInput;
+    @Field(() => ArticleCountAggregateInput, {nullable:true})
+    _count?: ArticleCountAggregateInput;
 
-  @Field(() => ArticleSumAggregateInput, { nullable: true })
-  _sum?: ArticleSumAggregateInput;
+    @Field(() => ArticleAvgAggregateInput, {nullable:true})
+    _avg?: ArticleAvgAggregateInput;
 
-  @Field(() => ArticleMinAggregateInput, { nullable: true })
-  _min?: ArticleMinAggregateInput;
+    @Field(() => ArticleSumAggregateInput, {nullable:true})
+    _sum?: ArticleSumAggregateInput;
 
-  @Field(() => ArticleMaxAggregateInput, { nullable: true })
-  _max?: ArticleMaxAggregateInput;
+    @Field(() => ArticleMinAggregateInput, {nullable:true})
+    _min?: ArticleMinAggregateInput;
+
+    @Field(() => ArticleMaxAggregateInput, {nullable:true})
+    _max?: ArticleMaxAggregateInput;
 }

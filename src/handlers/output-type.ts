@@ -26,11 +26,15 @@ export function outputType(outputType: OutputType, args: EventArguments) {
     String(outputType.name).startsWith(model.name);
   const isCountOutput =
     model?.name && outputType.name === `${model.name}CountOutputType`;
+  const isUpdateManyOutput =
+    model?.name && outputType.name === `UpdateMany${model.name}AndReturnOutputType`;
 
-  if (!config.emitBlocks.outputs && !isCountOutput) return;
+  if (!config.emitBlocks.outputs && !isCountOutput && !isUpdateManyOutput) return;
 
-  // Get rid of bogus suffixes
-  outputType.name = getOutputTypeName(outputType.name);
+  // Get rid of bogus suffixes except for UpdateManyAndReturn
+  if (!isUpdateManyOutput) {
+    outputType.name = getOutputTypeName(outputType.name);
+  }
 
   if (isAggregateOutput) {
     eventEmitter.emitSync('AggregateOutput', { ...args, outputType });
@@ -56,6 +60,23 @@ export function outputType(outputType: OutputType, args: EventArguments) {
 
   importDeclarations.add('Field', nestjsGraphql);
   importDeclarations.add('ObjectType', nestjsGraphql);
+
+  // Add count field for UpdateManyAndReturn type
+  if (isUpdateManyOutput) {
+    const countProperty = propertyStructure({
+      name: 'count',
+      isNullable: false,
+      propertyType: ['number'],
+      isList: false,
+    });
+    ok(countProperty.decorators, 'property.decorators is undefined');
+    countProperty.decorators.push({
+      name: 'Field',
+      arguments: ['() => Int', JSON5.stringify({ nullable: false })],
+    });
+    classStructure.properties?.push(countProperty);
+    importDeclarations.add('Int', nestjsGraphql);
+  }
 
   for (const field of outputType.fields) {
     const { location, isList, type } = field.outputType;

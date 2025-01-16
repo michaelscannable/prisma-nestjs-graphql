@@ -32,6 +32,58 @@ export function modelOutputType(outputType: OutputType, args: EventArguments) {
 
   if (isCreateManyReturn(outputType.name)) return;
 
+  // Handle UpdateManyAndReturn types
+  if (outputType.name.endsWith('AndReturnOutputType')) {
+    const model = models.get(
+      outputType.name.replace(/UpdateMany(.+)AndReturnOutputType/, '$1'),
+    );
+    ok(model, `Cannot find model by name ${outputType.name}`);
+
+    const sourceFile = getSourceFile({
+      name: outputType.name,
+      type: 'output',
+    });
+
+    const importDeclarations = new ImportDeclarationMap();
+    const classStructure: ClassDeclarationStructure = {
+      kind: StructureKind.Class,
+      isExported: true,
+      name: outputType.name,
+      decorators: [
+        {
+          name: 'ObjectType',
+          arguments: [],
+        },
+      ],
+      properties: [],
+    };
+
+    importDeclarations.add('Field', nestjsGraphql);
+    importDeclarations.add('ObjectType', nestjsGraphql);
+    importDeclarations.add('Int', nestjsGraphql);
+
+    const countProperty = propertyStructure({
+      name: 'count',
+      isNullable: false,
+      propertyType: ['number'],
+      isList: false,
+      hasExclamationToken: true,
+    });
+
+    ok(countProperty.decorators, 'property.decorators is undefined');
+    countProperty.decorators.push({
+      name: 'Field',
+      arguments: ['() => Int', JSON5.stringify({ nullable: false })],
+    });
+
+    classStructure.properties?.push(countProperty);
+
+    sourceFile.set({
+      statements: [...importDeclarations.toStatements(), classStructure],
+    });
+    return;
+  }
+
   const model = models.get(outputType.name);
   ok(model, `Cannot find model by name ${outputType.name}`);
 

@@ -69,7 +69,7 @@
     }
   },
   "dependencies": {
-    "@prisma/generator-helper": "^5.14.0",
+    "@prisma/generator-helper": "6.2.1",
     "await-event-emitter": "^2.0.2",
     "filenamify": "4.X",
     "flat": "5.X",
@@ -91,7 +91,7 @@
     "@nestjs/graphql": "^12.1.1",
     "@nestjs/platform-express": "^10.3.8",
     "@paljs/plugins": "^6.0.7",
-    "@prisma/client": "^5.14.0",
+    "@prisma/client": "^6.2.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^9.2.5",
@@ -134,7 +134,7 @@
     "pkgroll": "^2.1.0",
     "precise-commits": "^1.0.2",
     "prettier": "^3.2.5",
-    "prisma": "^5.14.0",
+    "prisma": "^6.2.1",
     "prisma-graphql-type-decimal": "^3.0.0",
     "reflect-metadata": "^0.2.2",
     "request": "^2.88.2",

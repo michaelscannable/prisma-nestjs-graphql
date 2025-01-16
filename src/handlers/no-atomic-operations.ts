@@ -43,12 +43,16 @@ function isAtomicOperation(typeName: string) {
   if (typeName.endsWith('FieldUpdateOperationsInput')) {
     return true;
   }
+  if (typeName.endsWith('AndReturnOutputType')) {
+    return false;
+  }
   return false;
 }
 
 function isListInput(typeName: string, model: string, field: string) {
   return (
     typeName === `${model}Create${field}Input` ||
-    typeName === `${model}Update${field}Input`
+    typeName === `${model}Update${field}Input` ||
+    typeName === `${model}UpdateMany${field}Input`
   );
 }
